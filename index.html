@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meine Website</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Willkommen auf dieser Website</h1>
+    <button onclick="loadData()">Website Infos laden</button>
+    <div id="output">
+        <div id="blog-container"></div> 
+    </div>
+
+    <script>
+        // Funktion, um Daten von der API zu laden und anzuzeigen
+        function loadData() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/api/blog/entries", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    var blogContainer = document.getElementById("blog-container");
+                    blogContainer.innerHTML = ""; 
+
+                    response.entries.forEach(function(entry) {
+                        var blogEntry = document.createElement("div");
+                        blogEntry.className = "blog-entry";
+                        blogEntry.innerHTML = "<h2>" + entry.title + "</h2><p>" + entry.content + "</p>";
+                        blogContainer.appendChild(blogEntry);
+                    });
+                }
+            };
+            xhr.send();
+        }
+
+        // Daten beim Laden der Seite laden
+        window.onload = loadData;
+    </script>
+</body>
+</html>
+
+
+
